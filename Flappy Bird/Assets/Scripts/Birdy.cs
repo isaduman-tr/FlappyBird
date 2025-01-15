@@ -9,6 +9,10 @@ public class Birdy : MonoBehaviour
     public Rigidbody2D rb2D;
     public GameManager managergame;
     public GameObject DeathScreen;
+    public AudioSource audioSource; // Eklenen satýr
+    public AudioClip[] audioClips; // Ses dosyalarýný saklamak için dizi
+    public AudioClip deathSound; // "DeathArea" çarpýþmasý için özel ses
+
     private void Start()
     {
         Time.timeScale = 1;
@@ -18,7 +22,9 @@ public class Birdy : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             rb2D.linearVelocity = Vector2.up * velocity; // Mouse button ile kusu ziplatir 
+            PlayNextSoundInstantly();
         }
+        
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -34,6 +40,17 @@ public class Birdy : MonoBehaviour
             ÝsDead = true;
             Time.timeScale = 0;
             DeathScreen.SetActive(true);
+            audioSource.PlayOneShot(deathSound);
         }
+    }
+    private void PlayNextSoundInstantly()
+    {
+        if (audioClips.Length == 0) return;
+
+        // Rastgele bir ses dosyasý seç
+        int randomIndex = Random.Range(0, audioClips.Length);
+
+        // Seçilen ses dosyasýný çal
+        audioSource.PlayOneShot(audioClips[randomIndex]);
     }
 }
