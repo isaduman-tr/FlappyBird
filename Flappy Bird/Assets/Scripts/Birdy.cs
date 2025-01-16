@@ -12,7 +12,7 @@ public class Birdy : MonoBehaviour
     public AudioSource audioSource; // Eklenen satýr
     public AudioClip[] audioClips; // Ses dosyalarýný saklamak için dizi
     public AudioClip deathSound; // "DeathArea" çarpýþmasý için özel ses
-
+    private int currentClipIndex = 0;
     private void Start()
     {
         Time.timeScale = 1;
@@ -47,10 +47,16 @@ public class Birdy : MonoBehaviour
     {
         if (audioClips.Length == 0) return;
 
-        // Rastgele bir ses dosyasý seç
-        int randomIndex = Random.Range(0, audioClips.Length);
+        // Mevcut ses dosyasýný çal
+        audioSource.PlayOneShot(audioClips[currentClipIndex]);
 
-        // Seçilen ses dosyasýný çal
-        audioSource.PlayOneShot(audioClips[randomIndex]);
+        // Sonraki ses dosyasýna geç
+        currentClipIndex++;
+
+        // Eðer son dosya çalýndýysa, baþa dön
+        if (currentClipIndex >= audioClips.Length)
+        {
+            currentClipIndex = 0;
+        }
     }
 }
